@@ -44,9 +44,8 @@ An element name is a string, or a function that produces an element name.
 An attribute is a key-value pair, or a list of attributes, of a function that
 returns an attribute.
 
-A child node is a string, or a list in the form
-`[<element name>, <attribute>, <child node>]` or a list of child nodes, or
-nothing.
+A node is a string, or a list in the form
+`[<element name>, <attribute>, <node>]`, or a list of nodes, or nothing.
 
 It's very important to note that these definitions are recursive. This makes
 the following equivalent:

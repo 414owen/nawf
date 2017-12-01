@@ -43,7 +43,9 @@ function nodeAttrs(input) {
 		case "function": return nodeAttrs(input());
 		case "object":
 			if (Array.isArray(input)) {
-				return mergeObjs(input.map(nodeAttrs));
+				var subs = input.map(nodeAttrs);
+				if (subs.indexOf(false) !== -1) {return false;}
+				return mergeObjs(subs);
 			}
 			var res = {};
 			for (var key in input) {
@@ -73,11 +75,15 @@ function validate(toNode, textNode, input) {
 			return [].concat.apply([], input.map(validate.bind(null, toNode, textNode)));
 		}
 	}
-	return [textNode(input.toString())];
+	return (input === undefined ? [] : [textNode(input.toString())]);
 }
 
 function root(toNode, textNode, input) {
-	return validate(toNode, textNode, input)[0];
+	var els = validate(toNode, textNode, input);
+	if (els.length > 1) {
+		err("Cannot have more than one root element!");
+	}
+	return els[0];
 }
 
 module.exports = {

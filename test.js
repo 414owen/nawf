@@ -1,5 +1,6 @@
-var T = require("./index");
+var nawf = require("./index");
 
+var firstTime = false;
 var doc = [
 	"div",
 	[
@@ -8,7 +9,7 @@ var doc = [
 		}
 	],
 	[
-		"Hello,", "World!", 
+		"Hello,", "World!",
 		[
 			"button",
 			{
@@ -19,5 +20,5 @@ var doc = [
 	]
 ];
 
-document.body.appendChild(T.dom(doc));
-console.log(T.text(doc));
+document.body.appendChild(nawf.dom(doc));
+console.log(nawf.text(doc));

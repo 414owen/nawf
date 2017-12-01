@@ -1,6 +1,14 @@
-# nawf
+# NAWF
 
 Not A Web Framework: the minimalist's DOM abstraction.
+
+## What is this?
+
+NAWF lets you generate DOM nodes or HTML text from a JSON-like structure. This
+enables extremely lightweight pure-javascript abstraction of rendering code.
+
+Obviously, generation of DOM nodes is only supported in the browser, but NAWF
+can generate HTML text in a Node.js environment, too!
 
 ## Install
 
@@ -81,5 +89,3 @@ are some genuine reasons you may want functions or lists in odd places...
 * Changing attributes, element types, or children based on the context of a
   closure
 * Mapping over data, to produce markup
-
-...That's all folks.

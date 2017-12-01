@@ -1,6 +1,6 @@
 var common = require("./common");
 
-function tn(a) {return a;}
+function tn(a) {return [a];}
 
 function attrText(attrs) {
 	var res = [];

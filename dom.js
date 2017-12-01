@@ -1,10 +1,8 @@
 var common = require("./common");
 
-var el = document.createElement.bind(document);
-var tn = document.createTextNode.bind(document);
 
 function node(type, attrs, children) {
-	var node = el(type);
+	var node = document.createElement(type);
 	for (var key in attrs) {
 		var val = attrs[key];
 		node[key] = attrs[key];
@@ -15,4 +13,9 @@ function node(type, attrs, children) {
 	return node;
 }
 
-module.exports = common.root.bind(null, node, tn);
+// has to be a separate function because `document` isn't available in node.js
+function textNode(text) {
+	return document.createTextNode(text);
+}
+
+module.exports = common.root.bind(null, node, textNode);

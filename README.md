@@ -88,4 +88,4 @@ are some genuine reasons you may want functions or lists in odd places...
 
 * Changing attributes, element types, or children based on the context of a
   closure
-* Mapping over data, to produce markup
+* Mapping over data, to produce a view

@@ -2,10 +2,15 @@ var common = require("./common");
 
 function tn(a) {return [a];}
 
+var alts = {
+	"className": "class"
+};
+
 function attrText(attrs) {
 	var res = [];
 	for (var key in attrs) {
-		res.push(key + "=\"" + attrs[key] + "\"");
+		var k = alts[key] || key;
+		res.push(k + "=\"" + attrs[key] + "\"");
 	}
 	return res.join(" ");
 }

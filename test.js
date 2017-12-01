@@ -5,6 +5,7 @@ var doc = [
 	"div",
 	[
 		{
+			className: "yes",
 			style: {backgroundColor: "red"}
 		}
 	],

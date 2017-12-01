@@ -34,7 +34,7 @@ function styleAttr(obj) {
 		var val = obj[key];
 		res += toCSSName(key) + ":" + val + ";"
 	}
-	return res;
+	return res.slice(0, res.length - 1);
 }
 
 function nodeAttrs(input) {

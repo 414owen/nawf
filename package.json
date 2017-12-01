@@ -1,6 +1,6 @@
 {
   "name": "nawf",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Not a web framework: JS -> (dom/text)",
   "main": "index.js",
   "scripts": {

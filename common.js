@@ -38,15 +38,13 @@ function styleAttr(obj) {
 }
 
 function nodeAttrs(input) {
-	var type = typeof(input);
-	switch (type) {
-		case "function": return nodeAttrs(input());
-		case "object":
-			if (Array.isArray(input)) {
-				var subs = input.map(nodeAttrs);
-				if (subs.indexOf(false) !== -1) {return false;}
-				return mergeObjs(subs);
-			}
+	switch (input.constructor) {
+		case Function: return nodeAttrs(input());
+		case Array:
+			var subs = input.map(nodeAttrs);
+			if (subs.indexOf(false) !== -1) {return false;}
+			return mergeObjs(subs);
+		case Object:
 			var res = {};
 			for (var key in input) {
 				var attr = input[key];
@@ -87,10 +85,5 @@ function root(toNode, textNode, input) {
 }
 
 module.exports = {
-	nodeName: nodeName,
-	mergeTwo: mergeTwo,
-	mergeObjs: mergeObjs,
-	typeErr: typeErr,
-	nodeAttrs: nodeAttrs,
 	root: root
 };

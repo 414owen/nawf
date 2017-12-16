@@ -11,17 +11,17 @@ Element.prototype.hide = function() {
 };
 
 Element.prototype.clear = function() {
-	while (myNode.firstChild) {
-		myNode.removeChild(myNode.firstChild);
+	while (this.firstChild) {
+		this.removeChild(myNode.firstChild);
 	}
 	return this;
 };
 
-function insertWith(with) {
+function insertWith(w) {
 	return function() {
 		var t = this;
-		Array.from(arguments).forEach(function(a) {
-			t[with](a.constructor === String ? textNode (a) : a);
+		Array.from(arguments).deepForEach(function(a) {
+			t[w](a.constructor === String ? textNode(a) : a);
 		});
 		return t;
 	}
@@ -29,8 +29,14 @@ function insertWith(with) {
 
 Element.prototype.append = insertWith("appendChild");
 Element.prototype.prepend = insertWith("insertBefore");
+
 Element.prototype.replace = function() {
 	this.clear().append.apply(this, Array.from(arguments).deepFlatten());
+};
+Text.prototype.replace = function(str) {
+	var n = textNode(str);
+	this.replaceWith(n);
+	return n;
 };
 
 function node(type, attrs, children) {

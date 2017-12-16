@@ -38,11 +38,12 @@ function styleAttr(obj) {
 }
 
 function nodeAttrs(input) {
+	if (input === undefined) {return false;}
 	switch (input.constructor) {
 		case Function: return nodeAttrs(input());
 		case Array:
 			var subs = input.map(nodeAttrs);
-			if (subs.indexOf(false) !== -1) {return false;}
+			if (subs.indexOf(false) !== -1) {return subs;}
 			return mergeObjs(subs);
 		case Object:
 			var res = {};
@@ -60,24 +61,28 @@ function nodeAttrs(input) {
 	return false;
 }
 
-function validate(toNode, textNode, input) {
-	var type = typeof(input);
-	if (type === "function") {return validate(toNode, textNode, input());}
-	if (Array.isArray(input)) {
-		// var name = nodeName(input[0]);
-		var attrs = nodeAttrs(input[1]);
-		if (typeof(attrs) === "object") {
-			return [toNode(nodeName(input[0]), attrs,
-				validate(toNode, textNode, input[2]))];
-		} else {
-			return [].concat.apply([], input.map(validate.bind(null, toNode, textNode)));
-		}
+function validate(toNode, textNode, store, input) {
+	if (input === undefined) {return false;}
+	if (input instanceof Node) {return input;}
+	switch (input.constructor) {
+		case Function: return validate(toNode, textNode, store, input());
+		case Array: 
+			// var name = nodeName(input[0]);
+			var attrs = nodeAttrs(input[1]);
+			if (attrs.constructor === Object) {
+				var res = [toNode(nodeName(input[0]), attrs,
+					validate(toNode, textNode, store, input[2]))];
+				if (attrs.name) {store[attrs.name] = res[0];}
+				return res;
+			} else {
+				return [].concat.apply([], input.map(validate.bind(null, toNode, textNode, store)));
+			}
 	}
 	return (input === undefined ? [] : [textNode(input.toString())]);
 }
 
-function root(toNode, textNode, input) {
-	var els = validate(toNode, textNode, input);
+function root(toNode, textNode, input, store) {
+	var els = validate(toNode, textNode, (store || {}), input);
 	if (els.length > 1) {
 		err("Cannot have more than one root element!");
 	}

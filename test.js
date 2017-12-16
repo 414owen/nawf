@@ -1,6 +1,8 @@
 var nawf = require("./index");
 
 var firstTime = false;
+var text;
+var store = {};
 var doc = [
 	"div",
 	[
@@ -10,16 +12,22 @@ var doc = [
 		}
 	],
 	[
-		"Hello,", "World!",
+		[
+			"div",
+			{name: "text"},
+			0
+		],
 		[
 			"button",
 			{
-				onclick: function() {console.log("Clicked!");}
+				onclick: function() {
+					store.text.innerText = parseInt(store.text.innerText) + 2;
+				}
 			},
-			"Testing"
+			"Increment"
 		]
 	]
 ];
 
-document.body.appendChild(nawf.dom(doc));
+document.body.appendChild(nawf.dom(doc, store));
 console.log(nawf.text(doc));

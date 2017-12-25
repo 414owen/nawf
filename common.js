@@ -1,12 +1,6 @@
-function nodeName(input) {
-	var type = typeof(input);
-	switch (type) {
-		case "function": return nodeName(input());
-		case "string": return input;
-	}
-	// typeErr("element name", type);
-	return false;
-}
+require("estl/arr");
+require("estl/obj");
+require("estl/dom");
 
 function mergeTwo(a, b) {
 	return Object.assign(a, b);
@@ -39,26 +33,22 @@ function styleAttr(obj) {
 
 function nodeAttrs(input) {
 	if (input === undefined) {return false;}
-	switch (input.constructor) {
-		case Function: return nodeAttrs(input());
-		case Array:
-			var subs = input.map(nodeAttrs);
-			if (subs.indexOf(false) !== -1) {return subs;}
-			return mergeObjs(subs);
-		case Object:
-			var res = {};
-			for (var key in input) {
-				var attr = input[key];
-				if (key === "style") {
-					res[key] = styleAttr(attr);
-				} else {
-					res[key] = attr;
-				}
+	var success = true;
+	var res = {};
+	input.peelForEach(function(o) {
+		if (typeof(o) !== "object") {
+			success = false;
+			return;
+		}
+		Object.getOwnPropertyNames(o).forEach(function(key) {
+			if (key === "style") {
+				res[key] = ";" + (res[key] || "") + styleAttr(o[key]);
+			} else {
+				res[key] = o[key];
 			}
-			return res;
-	}
-	// typeErr("attribute", type);
-	return false;
+		});
+	});
+	return success && res;
 }
 
 function validate(toNode, textNode, store, input) {
@@ -66,17 +56,18 @@ function validate(toNode, textNode, store, input) {
 	if (input instanceof Node) {return input;}
 	switch (input.constructor) {
 		case Function: return validate(toNode, textNode, store, input());
-		case Array: 
-			// var name = nodeName(input[0]);
-			var attrs = nodeAttrs(input[1]);
-			if (attrs.constructor === Object) {
-				var res = [toNode(nodeName(input[0]), attrs,
+		case Array:
+			var name = (input[0] || []).peel();
+			if (name.length === 1 && typeof(name[0]) === "string") {
+				var attrs = nodeAttrs(input[1]);
+				var res = [toNode(name[0], attrs,
 					validate(toNode, textNode, store, input[2]))];
-				if (attrs.name) {store[attrs.name] = res[0];}
+				if (attrs.name) {
+					store[attrs.name] = res[0];
+				}
 				return res;
-			} else {
-				return [].concat.apply([], input.map(validate.bind(null, toNode, textNode, store)));
 			}
+			return input.flatMap(validate.bind(null, toNode, textNode, store));
 	}
 	return (input === undefined ? [] : [textNode(input.toString())]);
 }

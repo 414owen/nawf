@@ -2,6 +2,6 @@
 # yarn lockfile v1
 
 
-estl@^1.0.2:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/estl/-/estl-1.0.3.tgz#73f7b97dcac567ab9dc96bad1ced3a5c925d2433"
+estl@^1.0.3:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/estl/-/estl-1.0.4.tgz#713eaae28eb1ec846c892afb8265c24f94a4fb30"

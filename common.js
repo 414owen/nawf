@@ -24,10 +24,10 @@ function toCSSName(str) {
 
 function styleAttr(obj) {
 	var res = "";
-	for (var key in obj) {
+	obj.forKeys(function(key) {
 		var val = obj[key];
 		res += toCSSName(key) + ":" + val + ";"
-	}
+	});
 	return res.slice(0, res.length - 1);
 }
 
@@ -40,7 +40,7 @@ function nodeAttrs(input) {
 			success = false;
 			return;
 		}
-		Object.getOwnPropertyNames(o).forEach(function(key) {
+		o.forKeys(function(key) {
 			if (key === "style") {
 				res[key] = ";" + (res[key] || "") + styleAttr(o[key]);
 			} else {
@@ -52,15 +52,16 @@ function nodeAttrs(input) {
 }
 
 function validate(toNode, textNode, store, input) {
-	if (input === undefined) {return false;}
+	if (input === undefined) {return [];}
 	if (input instanceof Node) {return input;}
 	switch (input.constructor) {
 		case Function: return validate(toNode, textNode, store, input());
 		case Array:
-			var name = (input[0] || []).peel();
-			if (name.length === 1 && typeof(name[0]) === "string") {
+			var name = (input[0] || []);
+			while (typeof(name) === "function") {name = name();}
+			if (typeof(name) === "string") {
 				var attrs = nodeAttrs(input[1]);
-				var res = [toNode(name[0], attrs,
+				var res = [toNode(name, attrs,
 					validate(toNode, textNode, store, input[2]))];
 				if (attrs.name) {
 					store[attrs.name] = res[0];
@@ -69,7 +70,7 @@ function validate(toNode, textNode, store, input) {
 			}
 			return input.flatMap(validate.bind(null, toNode, textNode, store));
 	}
-	return (input === undefined ? [] : [textNode(input.toString())]);
+	return [textNode(input.toString())];
 }
 
 function root(toNode, textNode, input, store) {

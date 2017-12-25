@@ -8,10 +8,10 @@ var alts = {
 
 function attrText(attrs) {
 	var res = [];
-	for (var key in attrs) {
+	attrs.forKeys(function(key) {
 		var k = alts[key] || key;
 		res.push(k + "=\"" + attrs[key] + "\"");
-	}
+	});
 	return res.join(" ");
 }
 

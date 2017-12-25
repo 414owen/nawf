@@ -1,4 +1,4 @@
-var nawf = require("./index");
+var nawf = require("../index");
 var func = require("estl/func");
 
 var store = {hello: "World"};
@@ -31,10 +31,9 @@ var doc = [
 			[
 				[
 					"div",
-					{name: "container"},
-					[]
+					{name: "container"}
 				],
-				["br", {}, []],
+				["br"],
 				[
 					"button",
 					{
@@ -53,8 +52,7 @@ var doc = [
 				],
 				[
 					"input",
-					{type: "range"},
-					[]
+					{type: "range"}
 				]
 			]
 		]
@@ -73,21 +71,17 @@ function draw() {
 					row.map(function(cell, x) {
 						return [
 							"td",
-							[
-								{},
-								{
-									style: {
-										backgroundColor: cell ? "white" : "black",
-										width: "20px",
-										height: "20px"
-									},
-									onclick: function() {
-										grid[y][x] = !grid[y][x];
-										if (paused) {draw();}
-									}
+							{
+								style: {
+									backgroundColor: cell ? "white" : "black",
+									width: "20px",
+									height: "20px"
+								},
+								onclick: function() {
+									grid[y][x] = !grid[y][x];
+									if (paused) {draw();}
 								}
-							],
-							[]
+							}
 						];
 					})
 				];
@@ -126,6 +120,6 @@ function tick() {
 	window.setTimeout(tick, 200);
 }
 
-// console.log(nawf.text(doc));
+console.log(nawf.text(doc));
 document.body.appendChild(nawf.dom(doc, store));
 draw();

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "mkdir -p build && webpack test.js build/test.js"
+    "build": "mkdir -p build && webpack examples/life.js build/life.js"
   },
   "author": "Owen Shepherd",
   "license": "MIT",

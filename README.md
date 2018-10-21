@@ -1,6 +1,10 @@
-# NAWF
-
-Not A Web Framework: the minimalist's DOM abstraction.
+<div align="center">
+	<p>
+	   <img src="https://owen.cafe/nawf.f5051a89.svg" height="150">
+	</p>
+	<h1>NAWF</h1>
+  Not A Web Framework - the minimalist's DOM abstraction
+</div>
 
 ## What is this?
 
